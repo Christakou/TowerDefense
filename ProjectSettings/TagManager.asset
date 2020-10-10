@@ -9,6 +9,7 @@ TagManager:
   - BuildSite
   - Ground
   - Tower
+  - BuildSiteFull
   layers:
   - Default
   - TransparentFX
@@ -43,6 +44,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Units
+    uniqueID: 1222185185
+    locked: 0
   - name: Items
     uniqueID: 3758235937
     locked: 0
