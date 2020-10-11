@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour
 {
@@ -12,9 +9,24 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float navigationUpdate;
     [SerializeField] private Vector2[] waypoints;
     [SerializeField] private float waitTime = 2.5f;
+    [SerializeField] private int healthPoints = 100;
 
+
+    private Animator anim;
+    private Collider2D enemyCollider;
     private Transform enemy;
+    private bool isDead = false;
     private float navigationTime = 0;
+
+
+
+    public bool IsDead
+    {
+        get
+        {
+            return isDead;
+        }
+    }
 
     private void Awake()
     {
@@ -23,18 +35,23 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i =0; i< waypointObject.transform.childCount; i++)
+        enemy = GetComponent<Transform>();
+        enemyCollider = GetComponent<Collider2D>();
+        anim = GetComponent<Animator>();
+
+        GameManager.Instance.RegisterEnemy(this);
+        for (int i = 0; i < waypointObject.transform.childCount; i++)
         {
             waypoints[i] = waypointObject.transform.GetChild(i).position;
         }
-       
-        enemy = GetComponent<Transform>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (waypoints != null) {
+        if (waypoints != null && !isDead)
+        {
             navigationTime += Time.deltaTime;
             if (navigationTime > navigationUpdate)
             {
@@ -49,22 +66,54 @@ public class Enemy : MonoBehaviour
                 navigationTime = 0;
             }
         }
-        
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("collided: " + collision);
-        if (collision.gameObject.tag == "Checkpoint")
+        if (collision.gameObject.CompareTag("Checkpoint"))
         {
 
             StartCoroutine(waitAndUpdateTarget());
-;        }
-        else if (collision.gameObject.tag == "Finish")
-        {
-            GameManager.Instance.removeEnemyFromScreen();
-            Destroy(gameObject);
+            ;
         }
+        else if (collision.gameObject.CompareTag("Finish"))
+        {
+            GameManager.Instance.UnregisterEnemy(this);
+        }
+
+        else if (collision.gameObject.CompareTag("Projectile"))
+        {
+            Debug.Log(gameObject + "was hit by projectile");
+            Projectile newP = collision.GetComponent<Projectile>();
+            EnemyHit(newP.AttackStrength);
+            Destroy(collision.gameObject);
+        }
+    }
+
+
+    public void EnemyHit(int hitpoints)
+    {
+        if (healthPoints - hitpoints > 0)
+        {
+
+            healthPoints -= hitpoints;
+            anim.Play("Hurt");
+            // call hurt animation
+        }
+        else
+        {
+            // call die animation
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        Debug.Log(gameObject + " is dead");
+        isDead = true;
+        enemyCollider.enabled = false;
+        anim.SetTrigger("didDie");
     }
 
     IEnumerator waitAndUpdateTarget()

@@ -73,7 +73,7 @@ TextureImporter:
     second: elements_22
   - first:
       213: -6829392826066141881
-    second: elements_23
+    second: TowerDisplay
   - first:
       213: -6499880414477926584
     second: elements_24
@@ -103,7 +103,7 @@ TextureImporter:
     second: elements_32
   - first:
       213: 4712537725945604637
-    second: elements_33
+    second: ScoreBoard
   - first:
       213: -2650457137970626630
     second: elements_34
@@ -253,7 +253,7 @@ TextureImporter:
     second: elements_82
   - first:
       213: -640078245291515357
-    second: elements_83
+    second: PlayBtn
   - first:
       213: -8534414752537287492
     second: elements_84
@@ -539,6 +539,9 @@ TextureImporter:
   - first:
       213: -7945633087424173785
     second: elements_178
+  - first:
+      213: 1383377185151083143
+    second: elements_179
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -1107,12 +1110,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: elements_23
+      name: TowerDisplay
       rect:
         serializedVersion: 2
         x: 1543
         y: 2263
-        width: 69
+        width: 68
         height: 73
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -1317,7 +1320,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: elements_33
+      name: ScoreBoard
       rect:
         serializedVersion: 2
         x: 2613
@@ -2367,7 +2370,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: elements_83
+      name: PlayBtn
       rect:
         serializedVersion: 2
         x: 1235

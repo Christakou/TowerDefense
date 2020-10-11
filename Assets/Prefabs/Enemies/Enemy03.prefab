@@ -171,3 +171,4 @@ MonoBehaviour:
   navigationUpdate: 0.05
   waypoints: []
   waitTime: 0.14
+  healthPoints: 300
