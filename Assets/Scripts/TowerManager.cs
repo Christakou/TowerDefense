@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TowerManager : Singleton<TowerManager>
 {
-    private TowerBtn towerBtnPressed;
+    public TowerBtn towerBtnPressed { get; set; }
     private SpriteRenderer spriteRenderer;
 
     private void Start()
@@ -16,7 +16,7 @@ public class TowerManager : Singleton<TowerManager>
         {
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-            if (hit.collider.tag == "BuildSite")
+            if (hit.collider.CompareTag("BuildSite"))
             {
                 hit.collider.tag = "BuildSiteFull";
                 placeTower(hit);

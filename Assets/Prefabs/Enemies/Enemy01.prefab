@@ -172,3 +172,4 @@ MonoBehaviour:
   waypoints: []
   waitTime: 0.14
   healthPoints: 200
+  rewardAmt: 2

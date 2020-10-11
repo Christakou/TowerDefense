@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Vector2[] waypoints;
     [SerializeField] private float waitTime = 2.5f;
     [SerializeField] private int healthPoints = 100;
-
+    [SerializeField] private int rewardAmt;
 
     private Animator anim;
     private Collider2D enemyCollider;
