@@ -21,8 +21,7 @@ public class GameManager : Singleton<GameManager>
 
     [SerializeField] private GameObject spawnPoint;
     [SerializeField] private GameObject[] enemies;
-    [SerializeField] private int maxEnemiesOnScreen;
-    [SerializeField] private int totalEnemies;
+    [SerializeField] private int totalEnemies = 3;
     [SerializeField] private int enemiesPerSpawn;
     [SerializeField] private float spawnDelay = 0.5f;
 
@@ -33,13 +32,50 @@ public class GameManager : Singleton<GameManager>
     private int totalKilled = 0;
     private int whichEnemiesToSpawn = 0;
     private gameStatus currentState = gameStatus.play;
-
+    private AudioSource audioSource;
 
 
 
     public List<Enemy> EnemyList = new List<Enemy>();
 
 
+
+
+    public int TotalEscaped
+    {
+        get
+        {
+            return totalEscaped;
+        }
+        set
+        {
+            totalEscaped = value;
+        }
+    }
+
+    public int RoundEscaped
+    {
+        get
+        {
+            return roundEscaped;
+        }
+        set 
+        {
+            roundEscaped = value;
+        }
+    }
+
+    public int TotalKilled
+    {
+        get
+        {
+            return totalKilled;
+        }
+        set
+        {
+            totalKilled = value;
+        }
+    }
 
     public int TotalMoney
     {
@@ -54,9 +90,17 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public AudioSource AudioSource
+    {
+        get
+        {
+            return audioSource;
+        }
+    }
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         playBtn.gameObject.SetActive(false);
         showMenu();
     }
@@ -72,7 +116,7 @@ public class GameManager : Singleton<GameManager>
         {
             for (int i = 0; i < enemiesPerSpawn; i++)
             {
-                if (EnemyList.Count < maxEnemiesOnScreen)
+                if (EnemyList.Count < totalEnemies)
                 {
                     GameObject newEnemy = Instantiate(enemies[0]) as GameObject;
                     newEnemy.transform.position = spawnPoint.transform.position;
@@ -103,6 +147,38 @@ public class GameManager : Singleton<GameManager>
     {
         TotalMoney -= amount;
     }
+
+
+    public void isWaveOver()
+    {
+        totalEscapedLbl.text = "Escaped " + TotalEscaped + "/10";
+        if ((RoundEscaped + TotalKilled) == totalEnemies)
+        {
+            setCurrentGameState();
+            showMenu();
+        }
+    }
+
+    public void setCurrentGameState()
+    {
+        if (TotalEscaped >= 10)
+        {
+            currentState = gameStatus.gameover;
+        }
+        else if (waveNumber == 0 && (TotalKilled + RoundEscaped) == 0)
+        {
+            currentState = gameStatus.play;
+        }
+        else if (waveNumber >= totalWaves)
+        {
+            currentState = gameStatus.win;
+        }
+        else
+        {
+            currentState = gameStatus.next;
+        }
+    }
+
     public void DestroyAllEnemies()
     {
         foreach(Enemy enemy in EnemyList)
@@ -118,6 +194,7 @@ public class GameManager : Singleton<GameManager>
         {
             case gameStatus.gameover:    
                 playBtnLbl.text = "Play again";
+                AudioSource.PlayOneShot(SoundManager.Instance.Gameover);
                 break;
             case gameStatus.next:
                 playBtnLbl.text = "Next wave";
@@ -132,7 +209,37 @@ public class GameManager : Singleton<GameManager>
         playBtn.gameObject.SetActive(true);
     }
 
+    public void playBtnPressed()
+    {
+        switch (currentState)
+        {
+            case gameStatus.next:
+                waveNumber += 1;
+                totalEnemies += waveNumber;
+                break;
+            default:
+                totalEnemies = 3;
+                TotalEscaped = 0;
+                TotalMoney = 10;
+                totalMoneyLbl.text = TotalMoney.ToString();
 
+                TowerManager.Instance.DestroyAllTower();
+                TowerManager.Instance.RenameTagsBuildSites();
+
+                totalEscapedLbl.text = "Escaped" + TotalEscaped + "/10";
+
+                audioSource.PlayOneShot(SoundManager.Instance.NewGame);
+
+                break;
+
+        }
+        DestroyAllEnemies();
+        TotalKilled = 0;
+        RoundEscaped = 0;
+        currentWaveLbl.text = "Wave " + (waveNumber + 1).ToString();
+        StartCoroutine(spawn());
+        playBtn.gameObject.SetActive(false);
+    }
     private void handleEscape()
     {
         if (Input.GetKeyDown(KeyCode.Escape))

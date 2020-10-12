@@ -6,13 +6,13 @@ public class TowerBtn : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    [SerializeField] private GameObject towerObject;
+    [SerializeField] private Tower towerObject;
     [SerializeField] private Sprite dragSprite;
     [SerializeField] private int towerPrice;
 
 
     
-    public GameObject TowerObject
+    public Tower TowerObject
     {
         get
         {

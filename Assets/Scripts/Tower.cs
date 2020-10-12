@@ -22,26 +22,16 @@ public class Tower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        attackCounter -= Time.deltaTime;
         if (targetEnemy == null || targetEnemy.IsDead) {
             Enemy nearestEnemy = GetNearestEnemyInRange();
             Debug.Log(nearestEnemy);
-            if (nearestEnemy != null && Vector2.Distance(transform.localPosition, nearestEnemy.transform.localPosition) <= attackRadius)
+            if (nearestEnemy != null && Vector2.Distance(transform.localPosition, nearestEnemy.transform.localPosition) <= attackRadius && !nearestEnemy.IsDead)
             {
                 targetEnemy = nearestEnemy;
             }
         }
         else
         {
-            if (attackCounter <= 0)
-            {
-                isAttacking = true;
-                attackCounter = timeBetweenAttacks;
-            }
-            else
-            {
-                isAttacking = false;
-            }
 
             if (Vector2.Distance(transform.localPosition, targetEnemy.transform.localPosition) > attackRadius)
             {
@@ -54,9 +44,16 @@ public class Tower : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isAttacking)
+        attackCounter -= Time.fixedDeltaTime;
+        if (attackCounter <= 0 && targetEnemy != null && !targetEnemy.IsDead)
         {
+            isAttacking = true;
+            attackCounter = timeBetweenAttacks;
             Attack();
+        }
+        else
+        {
+            isAttacking = false;
         }
     }
 
@@ -64,7 +61,18 @@ public class Tower : MonoBehaviour
     {
         isAttacking = false;
         Projectile newProjectile = Instantiate(projectile);
-
+        if (newProjectile.ProjectileType == proType.arrow)
+        {
+            GameManager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Arrow);
+        }
+        else if (newProjectile.ProjectileType == proType.fireballl)
+        {
+            GameManager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Fireball);
+        }
+        else if (newProjectile.ProjectileType == proType.rock)
+        {
+            GameManager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Rock);
+        }
 
         if (targetEnemy == null)
         {
@@ -113,7 +121,7 @@ public class Tower : MonoBehaviour
         List<Enemy> enemiesInRange = new List<Enemy>();
         foreach(Enemy enemy in GameManager.Instance.EnemyList)
         {
-            if (Vector2.Distance(transform.localPosition, enemy.transform.localPosition) <= attackRadius)
+            if (Vector2.Distance(transform.localPosition, enemy.transform.localPosition) <= attackRadius && !enemy.IsDead)
             {
                 enemiesInRange.Add(enemy);
             }

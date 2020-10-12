@@ -79,7 +79,10 @@ public class Enemy : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Finish"))
         {
+            GameManager.Instance.RoundEscaped += 1;
+            GameManager.Instance.TotalEscaped += 1;
             GameManager.Instance.UnregisterEnemy(this);
+            GameManager.Instance.isWaveOver();
         }
 
         else if (collision.gameObject.CompareTag("Projectile"))
@@ -99,6 +102,8 @@ public class Enemy : MonoBehaviour
 
             healthPoints -= hitpoints;
             anim.Play("Hurt");
+
+            GameManager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Hit);
             // call hurt animation
         }
         else
@@ -110,10 +115,13 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log(gameObject + " is dead");
         isDead = true;
         enemyCollider.enabled = false;
         anim.SetTrigger("didDie");
+        GameManager.Instance.TotalKilled += 1;
+        GameManager.Instance.addMoney(rewardAmt);
+        GameManager.Instance.isWaveOver();
+        GameManager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Death);
     }
 
     IEnumerator waitAndUpdateTarget()

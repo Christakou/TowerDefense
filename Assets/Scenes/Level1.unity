@@ -5263,6 +5263,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4821776343768071974, guid: bf7f11fa7db20614e91d66c3073fb65a,
+        type: 3}
+      propertyPath: totalMoneyLbl
+      value: 
+      objectReference: {fileID: 1213851814}
+    - target: {fileID: 4821776343768071974, guid: bf7f11fa7db20614e91d66c3073fb65a,
+        type: 3}
+      propertyPath: currentWaveLbl
+      value: 
+      objectReference: {fileID: 2027296887}
+    - target: {fileID: 4821776343768071974, guid: bf7f11fa7db20614e91d66c3073fb65a,
+        type: 3}
+      propertyPath: playBtnLbl
+      value: 
+      objectReference: {fileID: 1724228193}
+    - target: {fileID: 4821776343768071974, guid: bf7f11fa7db20614e91d66c3073fb65a,
+        type: 3}
+      propertyPath: totalEscapedLbl
+      value: 
+      objectReference: {fileID: 1661842276}
+    - target: {fileID: 4821776343768071974, guid: bf7f11fa7db20614e91d66c3073fb65a,
+        type: 3}
+      propertyPath: playBtn
+      value: 
+      objectReference: {fileID: 692098040}
+    - target: {fileID: 4821776343768071974, guid: bf7f11fa7db20614e91d66c3073fb65a,
+        type: 3}
+      propertyPath: totalEnemies
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821776343768071974, guid: bf7f11fa7db20614e91d66c3073fb65a,
+        type: 3}
+      propertyPath: totalWaves
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4821776343768071975, guid: bf7f11fa7db20614e91d66c3073fb65a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9821,7 +9856,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 692098041}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 796144575}
+        m_MethodName: playBtnPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &692098041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11723,6 +11769,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.85333335, y: 0.85333335}
   m_EdgeRadius: 0
+--- !u!114 &796144575 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4821776343768071974, guid: bf7f11fa7db20614e91d66c3073fb65a,
+    type: 3}
+  m_PrefabInstance: {fileID: 370497363}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed21db9a817b09e4cbab3ae02ad70481, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &802672748
 GameObject:
   m_ObjectHideFlags: 0
@@ -18166,7 +18224,7 @@ GameObject:
   - component: {fileID: 1213851815}
   - component: {fileID: 1213851814}
   m_Layer: 5
-  m_Name: Text
+  m_Name: moneyLbl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24898,7 +24956,7 @@ GameObject:
   - component: {fileID: 1724228194}
   - component: {fileID: 1724228193}
   m_Layer: 5
-  m_Name: Text
+  m_Name: buttonLbl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
