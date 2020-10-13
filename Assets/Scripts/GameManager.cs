@@ -20,7 +20,7 @@ public class GameManager : Singleton<GameManager>
 
 
     [SerializeField] private GameObject spawnPoint;
-    [SerializeField] private GameObject[] enemies;
+    [SerializeField] private Enemy[] enemies;
     [SerializeField] private int totalEnemies = 3;
     [SerializeField] private int enemiesPerSpawn;
     [SerializeField] private float spawnDelay = 0.5f;
@@ -31,6 +31,8 @@ public class GameManager : Singleton<GameManager>
     private int roundEscaped = 0;
     private int totalKilled = 0;
     private int whichEnemiesToSpawn = 0;
+    private int enemiesToSpawn = 0;
+    
     private gameStatus currentState = gameStatus.play;
     private AudioSource audioSource;
 
@@ -118,7 +120,7 @@ public class GameManager : Singleton<GameManager>
             {
                 if (EnemyList.Count < totalEnemies)
                 {
-                    GameObject newEnemy = Instantiate(enemies[0]) as GameObject;
+                    Enemy newEnemy = Instantiate(enemies[Random.Range(0,enemiesToSpawn)]);
                     newEnemy.transform.position = spawnPoint.transform.position;
                 }
             }
@@ -154,6 +156,10 @@ public class GameManager : Singleton<GameManager>
         totalEscapedLbl.text = "Escaped " + TotalEscaped + "/10";
         if ((RoundEscaped + TotalKilled) == totalEnemies)
         {
+            if(waveNumber <= enemies.Length)
+            {
+                enemiesToSpawn = waveNumber;
+            }
             setCurrentGameState();
             showMenu();
         }
